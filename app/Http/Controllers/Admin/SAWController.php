@@ -46,6 +46,8 @@ class SAWController extends Controller
                 $bobot = $kriteria->where('id', $k_id)->first()->bobot;
                 $preferensi[$alt_id] += $value * (float) $bobot;
             }
+            // Ubah nilai preferensi menjadi persen dan bulatkan ke bawah
+            $preferensi[$alt_id] = floor($preferensi[$alt_id] * 100);
         }
         
         // Hitung total nilai preferensi
@@ -55,10 +57,17 @@ class SAWController extends Controller
         arsort($preferensi);
         $ranking = array_keys($preferensi);
         
-        return view('saw.result', compact('bobot_kriteria', 'normalized', 'preferensi', 'total_preferensi', 'ranking', 'alternatifs', 'nilai_alternatif', 'kriteria'))->with([
+        // Tentukan hasil keputusan berdasarkan nilai preferensi
+        $keputusan = [];
+        foreach ($preferensi as $alt_id => $nilai) {
+            $keputusan[$alt_id] = $nilai > 70 ? 'Normal' : 'Stanting';
+        }
+        
+        return view('saw.result', compact('bobot_kriteria', 'normalized', 'preferensi', 'total_preferensi', 'ranking', 'alternatifs', 'nilai_alternatif', 'kriteria', 'keputusan'))->with([
             'user' => Auth::user(),
         ]);
     }
+    
     
     
     
