@@ -170,47 +170,50 @@ Result
         </tbody>
     </table> --}}
 
-    <!-- 7. Perangkingan -->
     <h3>7. Perangkingan</h3>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Peringkat</th>
-            <th>Balita</th>
-            <th>Nilai Preferensi (%)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($ranking as $index => $balita_id)
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $alternatifs->find($balita_id)->nama_balita }}</td>
-                <td>{{ number_format($preferensi[$balita_id], 2) }}</td>
+                <th>Peringkat</th>
+                <th>Balita</th>
+                <th>Nilai Preferensi (%)</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach($ranking as $index => $balita_id)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $alternatifs->find($balita_id)->nama_balita }}</td>
+                    <td>{{ number_format($preferensi[$balita_id] * 100, 2) }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
-<h3>8. Hasil Keputusan</h3>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Balita</th>
-            <th>Nilai Preferensi (%)</th>
-            <th>Hasil Keputusan</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($ranking as $index => $balita_id)
+    <h3>8. Hasil Keputusan</h3>
+
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>{{ $alternatifs->find($balita_id)->nama_balita }}</td>
-                <td>{{ number_format($preferensi[$balita_id], 2) }}</td>
-                <td>{{ $keputusan[$balita_id] }}</td>
+                <th>Balita</th>
+                <th>Nilai Preferensi (%)</th>
+                <th>Hasil Keputusan</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach($ranking as $index => $balita_id)
+                <tr>
+                    <td>{{ $alternatifs->find($balita_id)->nama_balita }}</td>
+                    <td>{{ number_format($preferensi[$balita_id] * 100, 2) }}</td>
+                    <td>{{ $keputusan[$balita_id] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 
+    <!-- Menu hasil keputusan -->
+    <h3>Hasil Keputusan</h3>
+    <p>Balita dengan nilai preferensi tertinggi adalah balita yang terkenda stanting..</p>
 </div>
 
 

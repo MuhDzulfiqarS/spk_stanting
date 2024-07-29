@@ -116,8 +116,8 @@ Kec.batang Kab. jeneponto dapat memberikan layanan kesehatan yang lebih berkuali
               <i class="ri-brush-4-line"></i>
             </div>
             <div class="card-body">
-              <h5 class="card-title"><a href="">Input Data Pasien</a></h5>
-              <p class="card-text">Input Data secara lengkap dan tepat berdasarkan informasi yang ada dari pasien </p>
+              <h5 class="card-title"><a href="">Input Data Anak</a></h5>
+              <p class="card-text">Input Data secara lengkap dan tepat berdasarkan informasi yang ada dari anak </p>
             </div>
           </div>
         </div>
@@ -128,7 +128,7 @@ Kec.batang Kab. jeneponto dapat memberikan layanan kesehatan yang lebih berkuali
               <i class="ri-movie-2-line"></i>
             </div>
             <div class="card-body">
-              <h5 class="card-title"><a href="">Training Data Pasien</a></h5>
+              <h5 class="card-title"><a href="">Training Data Anak</a></h5>
               <p class="card-text">Lakukan training data di sistem dan menghitung presentase berdasarkan rumus yang telah ditentukan</p>
             </div>
           </div>
@@ -170,8 +170,8 @@ Kec.batang Kab. jeneponto dapat memberikan layanan kesehatan yang lebih berkuali
         <div class="col-md-6 mt-4 mt-md-0">
           <div class="icon-box">
             <i class="bi bi-bar-chart"></i>
-            <h4><a href="#">Siapkan Data Pasien</a></h4>
-            <p>Silahkan siapkan data pasien yang anda mau training untuk pengambilan keputusan stunting</p>
+            <h4><a href="#">Siapkan Data anak</a></h4>
+            <p>Silahkan siapkan data anak yang anda mau training untuk pengambilan keputusan stunting</p>
           </div>
         </div>
         <div class="col-md-6 mt-4 mt-md-0">
@@ -188,7 +188,7 @@ Kec.batang Kab. jeneponto dapat memberikan layanan kesehatan yang lebih berkuali
 
   <!-- ======= Contact Section ======= -->
   <section id="contact" class="contact">
-    <div class="container" data-aos="fade-up"">
+    <div class="container" data-aos="fade-up">
 
   <div class=" section-title">
       <h2>Kontak</h2>
@@ -197,7 +197,7 @@ Kec.batang Kab. jeneponto dapat memberikan layanan kesehatan yang lebih berkuali
 
     <div class="row">
 
-      <div class="col-lg-6">
+      <div class="col-lg-12">
 
         <div class="row">
           <div class="col-md-12">
@@ -225,7 +225,7 @@ Kec.batang Kab. jeneponto dapat memberikan layanan kesehatan yang lebih berkuali
 
       </div>
 
-      <div class="col-lg-6 mt-4 mt-lg-0">
+      {{-- <div class="col-lg-6 mt-4 mt-lg-0">
         <form action="forms/contact.php" method="post" role="form" class="php-email-form">
           <div class="row">
             <div class="col-md-6 form-group">
@@ -248,7 +248,7 @@ Kec.batang Kab. jeneponto dapat memberikan layanan kesehatan yang lebih berkuali
           </div>
           <div class="text-center"><button type="submit">Send Message</button></div>
         </form>
-      </div>
+      </div> --}}
 
     </div>
 

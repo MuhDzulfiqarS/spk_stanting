@@ -9,6 +9,12 @@
 @if($user->level == 1)
 
 <li class="nav-item">
+  <a class="nav-link {{ Request::is('data_orangtua') ? '':'collapsed' }}"href="{{ url('data_orangtua') }}">
+    <i class="fa-solid fa-person-breastfeeding"></i><span>Data Orang Tua</span>
+  </a>
+</li>
+
+<li class="nav-item">
   <a class="nav-link {{ Request::is('kriteria') ? '':'collapsed' }}"href="{{ url('kriteria') }}">
     <i class="fa-solid fa-clipboard"></i><span>Kriteria</span>
   </a>

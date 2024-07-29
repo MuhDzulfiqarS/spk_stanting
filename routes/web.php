@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LayoutController;
 
-use App\Helpers\SAWHelper;
 use App\Http\Controllers\Admin\SAWController;
 
 // ADMIN
@@ -13,6 +12,8 @@ use App\Http\Controllers\Admin\KriteriaController as AdminKriteriaController;
 use App\Http\Controllers\Admin\SubkriteriaController as AdminSubkriteriaController;
 use App\Http\Controllers\Admin\BalitaController as AdminBalitaController;
 use App\Http\Controllers\Admin\NilaiAlternatifController as AdminNilaiAlternatifController;
+
+use App\Http\Controllers\Admin\DataOrangTuaController as AdminOrangTuaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,13 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('sub_kriteria/{id}/edit', [AdminSubkriteriaController::class,'edit'])->name('editsub_kriteria');
         Route::put('sub_kriteria/{id}', [AdminSubkriteriaController::class,'update']);
         Route::delete('sub_kriteria/{id}', [AdminSubkriteriaController::class,'destroy'])->name('sub_kriteria.destroy');
+
+        Route::get('data_orangtua', [AdminOrangTuaController::class,'index'])->name('data_orangtua');
+        Route::get('data_orangtua/create', [AdminOrangTuaController::class,'create']);
+        Route::post('data_orangtua/store', [AdminOrangTuaController::class,'store']);
+        Route::get('data_orangtua/{id}/edit', [AdminOrangTuaController::class,'edit'])->name('editdata_orangtua');
+        Route::put('data_orangtua/{id}', [AdminOrangTuaController::class,'update']);
+        Route::delete('data_orangtua/{id}', [AdminOrangTuaController::class,'destroy'])->name('data_orangtua.destroy');
 
         Route::get('saw-result', [SAWController::class, 'calculateSAW']);
         
