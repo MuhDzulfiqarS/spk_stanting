@@ -11,7 +11,7 @@
   </div>
   <div class="card-body">
     <div class="alert alert-success">
-      Selamat Datang di Sistem Permohonan Dana Perjalanan Dinas
+      Selamat Datang di Sistem Pendukung Keputusan Penentuan Stunting di Puskesmas Togo-Togo Kecamatan Batang Kabupaten Jeneponto
     </div>
   </div>
 </div>

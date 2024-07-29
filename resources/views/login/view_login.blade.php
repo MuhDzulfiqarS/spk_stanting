@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>PERDINA PEGADAIAN</title>
+  <title>SPK STUNTING SAW</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -47,7 +47,7 @@
               <div class="d-flex justify-content-center py-4">
                 <a href="/" class="logo d-flex align-items-center w-auto">
                   <img src="assets/img/logo.png" alt="" style="height: 500px;">
-                  <span class="d-none d-lg-block">PERDINA</span>
+                  <span class="d-none d-lg-block">SPK STUNTING SAW</span>
                 </a>
               </div><!-- End Logo -->
 

@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Jabatan;
+use App\Models\Balita;
 use DataTables;
 
-class JabatanController extends Controller
+class BalitaController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Jabatan::select('*');
+            $data = Balita::select('*');
             return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('action', function ($jabatans) {
-                $edit = route('editjabatan', $jabatans->id);
-                $delete = route('jabatan.destroy', $jabatans->id);
+            ->addColumn('action', function ($balitas) {
+                $edit = route('editbalita', $balitas->id);
+                $delete = route('balita.destroy', $balitas->id);
                 $deleteButton = '
-                    <button class="btn btn-secondary btn-sm delete-button" data-id="'.$jabatans->id.'">
+                    <button class="btn btn-secondary btn-sm delete-button" data-id="'.$balitas->id.'">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 ';
@@ -34,14 +34,14 @@ class JabatanController extends Controller
             })
             ->toJson();
         }
-    return view('layout_jabatan.index')->with([
+    return view('layout_balita.index')->with([
             'user' => Auth::user(),
             ]);
     }
 
     public function create(){
-        $jabatan = Jabatan::all();
-        return view ('layout_jabatan.create',compact(['jabatan']))->with([
+        $balita = Balita::all();
+        return view ('layout_balita.create',compact(['balita']))->with([
             'user' => Auth::user(),
          ]);
     }
@@ -49,45 +49,52 @@ class JabatanController extends Controller
     public function store(Request $request)
     { 
         $request->validate([
-            'nama_jabatan'=>'required',       
+            'nama_balita'=>'required',       
+            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
+            'tempat_lahir'=>'required',
+            'tanggal_lahir'=>'required',
+            'nama_orangtua'=>'required',  
         ],[
-            'nama_jabatan.required' => 'Nama jabatan wajib di isi',
+            'nama_balita.required' => 'Nama balita wajib di isi',
+            'jenis_kelamin.required' => 'Anda harus memilih jenis kelamin',
+            'jenis_kelamin.in' => 'Pilihan jenis kelamin tidak valid',
+            'tempat_lahir.required' => 'Tempat lahir wajib di isi',
+            'tanggal_lahir.required' => 'Tanggal lahir wajib di isi',
+            'nama_orangtua.required' => 'Nama orang tua wajib di isi',
         ]);
         $data = $request->except(["_token","submit"]);
-        Jabatan::create($data);
+        Balita::create($data);
         toastr()->success('Berhasil menambahkan data');
-        return redirect('jabatan')->with([
+        return redirect('balita')->with([
             'user' => Auth::user(),
          ]);
     }
 
     public function edit($id)
     {
-        $jabatan = Jabatan::find($id); 
-        return view('layout_jabatan.edit', compact('jabatan'))->with([
+        $balita = Balita::find($id); 
+        return view('layout_balita.edit', compact('balita'))->with([
             'user' => Auth::user(),
          ]);
     }
 
     public function update($id, Request $request)
     {
-        $jabatan = Jabatan::find($id); 
-        $jabatan->update($request->except(['_token','submit']));
+        $balita = Balita::find($id); 
+        $balita->update($request->except(['_token','submit']));
         toastr()->success('Data berhasil di Update');
-        return redirect('jabatan')->with([
+        return redirect('balita')->with([
             'user' => Auth::user(),
          ]);
     }
 
     public function destroy($id)
     {
-        $jabatan = Jabatan::find($id);
-        $jabatan->delete();
+        $balita = Balita::find($id);
+        $balita->delete();
         return response()->json([
             'user' => Auth::user(),
             'success' => 'Data berhasil di Delete'
          ]);
     }
-
-
 }

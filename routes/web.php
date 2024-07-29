@@ -4,12 +4,15 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LayoutController;
-use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\DepartemenController;
+
+use App\Helpers\SAWHelper;
+use App\Http\Controllers\Admin\SAWController;
 
 // ADMIN
-use App\Http\Controllers\Admin\JabatanController as AdminJabatanController;
-use App\Http\Controllers\Admin\GradeController as AdminGradeController;
+use App\Http\Controllers\Admin\KriteriaController as AdminKriteriaController;
+use App\Http\Controllers\Admin\SubkriteriaController as AdminSubkriteriaController;
+use App\Http\Controllers\Admin\BalitaController as AdminBalitaController;
+use App\Http\Controllers\Admin\NilaiAlternatifController as AdminNilaiAlternatifController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,25 +40,36 @@ Route::controller(LoginController::class)->group(function(){
 
 Route::group(['middleware' => ['auth']], function(){
     Route::group(['middleware' => ['cekUserLogin:1']],function(){
-        Route::get('karyawan', [KaryawanController::class,'index'])->name('karyawan');
-        Route::get('karyawan/create', [KaryawanController::class,'create']);
-        Route::post('karyawan/store', [KaryawanController::class,'store']);
-        Route::get('karyawan/{id}/edit', [KaryawanController::class,'edit'])->name('editkaryawan');
-        Route::put('karyawan/{id}', [KaryawanController::class,'update']);
-        Route::delete('karyawan/{id}', [KaryawanController::class,'destroy'])->name('karyawan.destroy');
+        Route::get('kriteria', [AdminKriteriaController::class,'index'])->name('kriteria');
+        Route::get('kriteria/create', [AdminKriteriaController::class,'create']);
+        Route::post('kriteria/store', [AdminKriteriaController::class,'store']);
+        Route::get('kriteria/{id}/edit', [AdminKriteriaController::class,'edit'])->name('editkriteria');
+        Route::put('kriteria/{id}', [AdminKriteriaController::class,'update']);
+        Route::delete('kriteria/{id}', [AdminKriteriaController::class,'destroy'])->name('kriteria.destroy');
 
-        Route::get('jabatan', [AdminJabatanController::class,'index'])->name('jabatan');
-        Route::get('jabatan/create', [AdminJabatanController::class,'create']);
-        Route::post('jabatan/store', [AdminJabatanController::class,'store']);
-        Route::get('jabatan/{id}/edit', [AdminJabatanController::class,'edit'])->name('editjabatan');
-        Route::put('jabatan/{id}', [AdminJabatanController::class,'update']);
-        Route::delete('jabatan/{id}', [AdminJabatanController::class,'destroy'])->name('jabatan.destroy');
+        Route::get('balita', [AdminBalitaController::class,'index'])->name('balita');
+        Route::get('balita/create', [AdminBalitaController::class,'create']);
+        Route::post('balita/store', [AdminBalitaController::class,'store']);
+        Route::get('balita/{id}/edit', [AdminBalitaController::class,'edit'])->name('editbalita');
+        Route::put('balita/{id}', [AdminBalitaController::class,'update']);
+        Route::delete('balita/{id}', [AdminBalitaController::class,'destroy'])->name('balita.destroy');
 
-        Route::get('grade', [AdminGradeController::class,'index'])->name('grade');
-        Route::get('grade/create', [AdminGradeController::class,'create']);
-        Route::post('grade/store', [AdminGradeController::class,'store']);
-        Route::get('grade/{id}/edit', [AdminGradeController::class,'edit'])->name('editgrade');
-        Route::put('grade/{id}', [AdminGradeController::class,'update']);
-        Route::delete('grade/{id}', [AdminGradeController::class,'destroy'])->name('grade.destroy');
+        Route::get('nilai_alternatif', [AdminNilaiAlternatifController::class,'index'])->name('nilai_alternatif');
+        Route::get('nilai_alternatif/create', [AdminNilaiAlternatifController::class,'create']);
+        Route::post('nilai_alternatif/store', [AdminNilaiAlternatifController::class,'store']);
+        Route::get('nilai_alternatif/{id}/edit', [AdminNilaiAlternatifController::class,'edit'])->name('editnilai_alternatif');
+        Route::put('nilai_alternatif/{id}', [AdminNilaiAlternatifController::class,'update']);
+        Route::delete('nilai_alternatif/{id}', [AdminNilaiAlternatifController::class,'destroy'])->name('nilai_alternatif.destroy');
+
+        Route::get('sub_kriteria', [AdminSubkriteriaController::class,'index'])->name('sub_kriteria');
+        Route::get('sub_kriteria/create', [AdminSubkriteriaController::class,'create']);
+        Route::post('sub_kriteria/store', [AdminSubkriteriaController::class,'store']);
+        Route::get('sub_kriteria/{id}/edit', [AdminSubkriteriaController::class,'edit'])->name('editsub_kriteria');
+        Route::put('sub_kriteria/{id}', [AdminSubkriteriaController::class,'update']);
+        Route::delete('sub_kriteria/{id}', [AdminSubkriteriaController::class,'destroy'])->name('sub_kriteria.destroy');
+
+        Route::get('saw-result', [SAWController::class, 'calculateSAW']);
+        
+
     });
 });
