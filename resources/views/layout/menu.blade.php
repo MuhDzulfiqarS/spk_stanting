@@ -51,6 +51,11 @@
 </li>
 
 
-
+@elseif($user->level == 2)
+<li class="nav-item">
+  <a class="nav-link {{ Request::is('hasil_keputusan_user') ? '' : 'collapsed' }}" href="{{ url('hasil_keputusan_user') }}">
+    <i class="fa-solid fa-print"></i><span>Data Hasil Keputusan</span>
+  </a>
+</li>
 
 @endif

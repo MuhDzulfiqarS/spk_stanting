@@ -1,7 +1,7 @@
 @extends('layout.main')
 
 @section('judul')
-{{ $user->name }}
+Dashboard
 @endsection
 
 @section('isi')

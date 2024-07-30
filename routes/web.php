@@ -15,6 +15,9 @@ use App\Http\Controllers\Admin\NilaiAlternatifController as AdminNilaiAlternatif
 use App\Http\Controllers\Admin\DataOrangTuaController as AdminOrangTuaController;
 use App\Http\Controllers\Admin\HasilKeputusanController as AdminHasilKeputusanController;
 
+// USER
+use App\Http\Controllers\User\HasilKeputusanController as UserHasilKeputusanController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,6 +85,12 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('/hasil_keputusan/export/excel', [AdminHasilKeputusanController::class, 'exportExcel'])->name('hasil_keputusan.export.excel');
         Route::get('/keputusan/export/pdf', [AdminHasilKeputusanController::class, 'exportPDF'])->name('hasil_keputusan.export.pdf');
         
+        
 
+    });
+    Route::group(['middleware' => ['cekUserLogin:2']],function(){
+        Route::get('hasil_keputusan_user', [UserHasilKeputusanController::class,'index'])->name('hasil_keputusan_user');
+        Route::get('/hasil_keputusan_user/export/excel', [UserHasilKeputusanController::class, 'exportExcel'])->name('hasil_keputusan_user.export.excel');
+        Route::get('/keputusan/export/pdf', [UserHasilKeputusanController::class, 'exportPDF'])->name('hasil_keputusan_user.export.pdf');
     });
 });
