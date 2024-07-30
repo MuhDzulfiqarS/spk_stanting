@@ -58,7 +58,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a  class="logo d-flex align-items-center">
         <img src="{{ asset ('assets/img/logo.png') }}" alt="">
-        <span class="d-none d-lg-block">PERDINA</span>
+        <span class="d-none d-lg-block">SPK SAW STANTING</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->

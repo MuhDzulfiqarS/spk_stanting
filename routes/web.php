@@ -12,8 +12,8 @@ use App\Http\Controllers\Admin\KriteriaController as AdminKriteriaController;
 use App\Http\Controllers\Admin\SubkriteriaController as AdminSubkriteriaController;
 use App\Http\Controllers\Admin\BalitaController as AdminBalitaController;
 use App\Http\Controllers\Admin\NilaiAlternatifController as AdminNilaiAlternatifController;
-
 use App\Http\Controllers\Admin\DataOrangTuaController as AdminOrangTuaController;
+use App\Http\Controllers\Admin\HasilKeputusanController as AdminHasilKeputusanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +77,10 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('data_orangtua/{id}', [AdminOrangTuaController::class,'destroy'])->name('data_orangtua.destroy');
 
         Route::get('saw-result', [SAWController::class, 'calculateSAW']);
+
+        Route::get('hasil_keputusan', [AdminHasilKeputusanController::class,'index'])->name('hasil_keputusan');
+        Route::get('/hasil_keputusan/export/excel', [AdminHasilKeputusanController::class, 'exportExcel'])->name('hasil_keputusan.export.excel');
+        Route::get('/keputusan/export/pdf', [AdminHasilKeputusanController::class, 'exportPDF'])->name('hasil_keputusan.export.pdf');
         
 
     });

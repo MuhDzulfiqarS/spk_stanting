@@ -1,7 +1,7 @@
 <li class="nav-item">
     <a class="nav-link {{ Request::is('home') ? '':'collapsed' }}" href="{{ url('home') }}">
     
-        <span>{{ $user->name }}</span>
+        <span>Dashboard</span>
     </a>
 </li>
 
@@ -41,6 +41,12 @@
 <li class="nav-item">
   <a class="nav-link {{ Request::is('saw-result') ? '' : 'collapsed' }}" href="{{ url('saw-result') }}">
     <i class="fa-solid fa-calculator"></i><span>Proses Perhitungan</span>
+  </a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link {{ Request::is('hasil_keputusan') ? '' : 'collapsed' }}" href="{{ url('hasil_keputusan') }}">
+    <i class="fa-solid fa-print"></i><span>Data Hasil Keputusan</span>
   </a>
 </li>
 

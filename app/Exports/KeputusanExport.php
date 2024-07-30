@@ -1,18 +1,49 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Exports;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use App\Models\Keputusan;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Models\Balita;
 use App\Models\Sub_kriteria;
 use App\Models\Kriteria;
 use App\Models\Nilai_alternatif;
 
-class SAWController extends Controller
+class KeputusanExport implements FromCollection
 {
-    public function calculateSAW()
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function collection()
+    {
+       // Dapatkan data keputusan
+       $keputusan = $this->getKeputusanData();
+        
+       // Konversi data keputusan menjadi collection
+       $data = collect($keputusan)->map(function($item) {
+           return [
+               'rank' => $item['rank'],
+               'balita' => $item['balita'],
+               'nilai_preferensi' => $item['nilai_preferensi'],
+               'hasil_keputusan' => $item['hasil_keputusan']
+           ];
+       });
+
+       return $data;
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Rank',
+            'Balita',
+            'Nilai Preferensi (%)',
+            'Hasil Keputusan'
+        ];
+    }
+
+    protected function getKeputusanData()
     {
         // Ambil data kriteria beserta sub-kriterianya
         $kriteria = Kriteria::with('subkriteria')->get();
@@ -22,9 +53,6 @@ class SAWController extends Controller
         
         // Ambil nilai alternatif beserta sub-kriterianya
         $nilai_alternatif = Nilai_alternatif::with('sub_kriteria')->get();
-        
-        // Data untuk view
-        $bobot_kriteria = $kriteria->pluck('bobot', 'id')->toArray();
         
         // Normalisasi
         $normalized = [];
@@ -48,33 +76,22 @@ class SAWController extends Controller
             }
         }
         
-        // Hitung total nilai preferensi
-        $total_preferensi = array_sum($preferensi);
-        
         // Perangkingan
         arsort($preferensi);
         $ranking = array_keys($preferensi);
 
-         // Tentukan hasil keputusan berdasarkan nilai preferensi
-         $keputusan = [];
-         $jumlah_normal = 0;
-         $jumlah_stanting = 0;
-         foreach ($preferensi as $alt_id => $nilai) {
-             if ($nilai > 0.7) {
-                 $keputusan[$alt_id] = 'Normal';
-                 $jumlah_normal++;
-             } else {
-                 $keputusan[$alt_id] = 'Stanting';
-                 $jumlah_stanting++;
-             }
-         }
-        
-        return view('saw.result', compact('bobot_kriteria', 'normalized', 'preferensi', 'total_preferensi', 'ranking', 'alternatifs', 'nilai_alternatif', 'kriteria','keputusan','jumlah_normal', 'jumlah_stanting'))->with([
-            'user' => Auth::user(),
-        ]);
+        // Tentukan hasil keputusan berdasarkan nilai preferensi dan perangkingan
+        $keputusan = [];
+        $rank = 1;
+        foreach ($ranking as $alt_id) {
+            $keputusan[] = [
+                'rank' => $rank++,
+                'balita' => $alternatifs->find($alt_id)->nama_balita,
+                'nilai_preferensi' => number_format($preferensi[$alt_id] * 100, 2),
+                'hasil_keputusan' => $preferensi[$alt_id] > 0.7 ? 'Normal' : 'Stanting'
+            ];
+        }
+
+        return $keputusan;
     }
-    
-    
-    
-    
 }
