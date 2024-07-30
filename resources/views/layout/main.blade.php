@@ -58,11 +58,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a  class="logo d-flex align-items-center">
         <img src="{{ asset ('assets/img/logo.png') }}" alt="">
-<<<<<<< HEAD
         <span class="d-none d-lg-block">SPK SAW STANTING</span>
-=======
-        <span class="d-none d-lg-block">SPK-SAW</span>
->>>>>>> 82575724d3becc728a534794a32407c96038ab6c
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
