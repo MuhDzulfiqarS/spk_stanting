@@ -83,7 +83,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('hasil_keputusan', [AdminHasilKeputusanController::class,'index'])->name('hasil_keputusan');
         Route::get('/hasil_keputusan/export/excel', [AdminHasilKeputusanController::class, 'exportExcel'])->name('hasil_keputusan.export.excel');
-        Route::get('/keputusan/export/pdf', [AdminHasilKeputusanController::class, 'exportPDF'])->name('hasil_keputusan.export.pdf');
+        Route::get('/hasil_keputusan/export/pdf', [AdminHasilKeputusanController::class, 'exportPDF'])->name('hasil_keputusan.export.pdf');
         
         
 
