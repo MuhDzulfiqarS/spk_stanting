@@ -50,6 +50,19 @@
   </a>
 </li>
 
+<li class="nav-item">
+  <a class="nav-link {{ Request::is('hasil_keputusan_normal') ? '' : 'collapsed' }}" href="{{ url('hasil_keputusan_normal') }}">
+    <i class="fa-solid fa-print"></i><span>Keputusan Normal</span>
+  </a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link {{ Request::is('hasil_keputusan_stunting') ? '' : 'collapsed' }}" href="{{ url('hasil_keputusan_stunting') }}">
+    <i class="fa-solid fa-print"></i><span>Keputusan Stunting</span>
+  </a>
+</li>
+
+
 
 @elseif($user->level == 2)
 <li class="nav-item">

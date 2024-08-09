@@ -10,9 +10,10 @@ use App\Models\Sub_kriteria;
 use App\Models\Kriteria;
 use App\Models\Nilai_alternatif;
 use DataTables;
-use PDF;
-use Excel;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Maatwebsite\Excel\Facades\Excel as Excel;
 use App\Exports\KeputusanExport;
+use App\Exports\KeputusanExportStunting;
 
 class HasilKeputusanController extends Controller
 {
@@ -87,6 +88,7 @@ class HasilKeputusanController extends Controller
         return Excel::download(new KeputusanExport, 'keputusan.xlsx');
     }
 
+
     public function exportPDF()
     {
         $keputusan = $this->getKeputusanData(); // Dapatkan data keputusan
@@ -94,6 +96,27 @@ class HasilKeputusanController extends Controller
         return $pdf->download('hasilkeputusan.pdf');
     }
 
+    public function exportPDFNormal()
+    {
+        $keputusan = $this->getKeputusanData(); // Mengambil semua data keputusan
+        $keputusan = array_filter($keputusan, function($item) {
+            return $item['hasil_keputusan'] === 'Normal';
+        });
+        $pdf = PDF::loadView('exports.hasil_keputusan_normal_pdf', compact('keputusan'));
+        return $pdf->download('hasilkeputusan_normal.pdf');
+    }
+
+    public function exportPDFStunting()
+    {
+        $keputusan = $this->getKeputusanData(); // Mengambil semua data keputusan
+        $keputusan = array_filter($keputusan, function($item) {
+            return $item['hasil_keputusan'] === 'Stanting';
+        });
+        $pdf = PDF::loadView('exports.hasil_keputusan_stunting_pdf', compact('keputusan'));
+        return $pdf->download('hasilkeputusan_stunting.pdf');
+    }
+
+    
     protected function getKeputusanData()
     {
         // Fungsi ini untuk mendapatkan data keputusan, sama seperti yang ada di fungsi index
@@ -147,5 +170,130 @@ class HasilKeputusanController extends Controller
 
         return $keputusan;
     }
+
+    public function showNormal(Request $request)
+{
+    // Ambil data kriteria beserta sub-kriterianya
+    $kriteria = Kriteria::with('subkriteria')->get();
+    
+    // Ambil semua data balita
+    $alternatifs = Balita::all();
+    
+    // Ambil nilai alternatif beserta sub-kriterianya
+    $nilai_alternatif = Nilai_alternatif::with('sub_kriteria')->get();
+    
+    // Normalisasi
+    $normalized = [];
+    foreach ($kriteria as $k) {
+        $maxValue = $nilai_alternatif->where('sub_kriteria.kriteria_id', $k->id)
+                                      ->max(function($na) {
+                                          return $na->sub_kriteria->nilai;
+                                      });
+        foreach ($nilai_alternatif->where('sub_kriteria.kriteria_id', $k->id) as $na) {
+            $normalized[$na->balita_id][$k->id] = (float) $na->sub_kriteria->nilai / $maxValue;
+        }
+    }
+    
+    // Hitung nilai preferensi
+    $preferensi = [];
+    foreach ($normalized as $alt_id => $criteria) {
+        $preferensi[$alt_id] = 0;
+        foreach ($criteria as $k_id => $value) {
+            $bobot = $kriteria->where('id', $k_id)->first()->bobot;
+            $preferensi[$alt_id] += $value * (float) $bobot;
+        }
+    }
+    
+    // Perangkingan
+    arsort($preferensi);
+    $ranking = array_keys($preferensi);
+
+    // Tentukan hasil keputusan berdasarkan nilai preferensi
+    $keputusan = [];
+    $rank = 1;
+    foreach ($ranking as $alt_id) {
+        if ($preferensi[$alt_id] > 0.7) { // Hanya tampilkan yang normal
+            $keputusan[] = [
+                'rank' => $rank++,
+                'balita' => $alternatifs->find($alt_id)->nama_balita,
+                'nilai_preferensi' => number_format($preferensi[$alt_id] * 100, 2),
+                'hasil_keputusan' => 'Normal'
+            ];
+        }
+    }
+
+    if ($request->ajax()) {
+        return datatables()->of($keputusan)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    return view('layout_hasil_keputusan.normal', compact('keputusan'))->with([
+        'user' => Auth::user(),
+    ]);
+}
+
+public function showStunting(Request $request)
+{
+    // Ambil data kriteria beserta sub-kriterianya
+    $kriteria = Kriteria::with('subkriteria')->get();
+    
+    // Ambil semua data balita
+    $alternatifs = Balita::all();
+    
+    // Ambil nilai alternatif beserta sub-kriterianya
+    $nilai_alternatif = Nilai_alternatif::with('sub_kriteria')->get();
+    
+    // Normalisasi
+    $normalized = [];
+    foreach ($kriteria as $k) {
+        $maxValue = $nilai_alternatif->where('sub_kriteria.kriteria_id', $k->id)
+                                      ->max(function($na) {
+                                          return $na->sub_kriteria->nilai;
+                                      });
+        foreach ($nilai_alternatif->where('sub_kriteria.kriteria_id', $k->id) as $na) {
+            $normalized[$na->balita_id][$k->id] = (float) $na->sub_kriteria->nilai / $maxValue;
+        }
+    }
+    
+    // Hitung nilai preferensi
+    $preferensi = [];
+    foreach ($normalized as $alt_id => $criteria) {
+        $preferensi[$alt_id] = 0;
+        foreach ($criteria as $k_id => $value) {
+            $bobot = $kriteria->where('id', $k_id)->first()->bobot;
+            $preferensi[$alt_id] += $value * (float) $bobot;
+        }
+    }
+    
+    // Perangkingan
+    arsort($preferensi);
+    $ranking = array_keys($preferensi);
+
+    // Tentukan hasil keputusan berdasarkan nilai preferensi
+    $keputusan = [];
+    $rank = 1;
+    foreach ($ranking as $alt_id) {
+        if ($preferensi[$alt_id] < 0.7) { // Hanya tampilkan yang stunting
+            $keputusan[] = [
+                'rank' => $rank++,
+                'balita' => $alternatifs->find($alt_id)->nama_balita,
+                'nilai_preferensi' => number_format($preferensi[$alt_id] * 100, 2),
+                'hasil_keputusan' => 'Stunting'
+            ];
+        }
+    }
+
+    if ($request->ajax()) {
+        return datatables()->of($keputusan)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    return view('layout_hasil_keputusan.stunting', compact('keputusan'))->with([
+        'user' => Auth::user(),
+    ]);
+}
+
     
 }

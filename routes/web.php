@@ -84,6 +84,15 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('hasil_keputusan', [AdminHasilKeputusanController::class,'index'])->name('hasil_keputusan');
         Route::get('/hasil_keputusan/export/excel', [AdminHasilKeputusanController::class, 'exportExcel'])->name('hasil_keputusan.export.excel');
         Route::get('/hasil_keputusan/export/pdf', [AdminHasilKeputusanController::class, 'exportPDF'])->name('hasil_keputusan.export.pdf');
+       
+        // route new normal dan stunting
+        Route::get('hasil_keputusan_normal', [AdminHasilKeputusanController::class, 'showNormal'])->name('hasil_keputusan_normal.normal');
+        Route::get('hasil_keputusan_stunting', [AdminHasilKeputusanController::class, 'showStunting'])->name('hasil_keputusan_stunting.stunting');
+        Route::get('/hasil_keputusan_normal/export/excel', [AdminHasilKeputusanController::class, 'exportExcelNormal'])->name('hasil_keputusan_normal.export.excel');
+        Route::get('/hasil_keputusan_normal/export/pdf', [AdminHasilKeputusanController::class, 'exportPDFNormal'])->name('hasil_keputusan_normal.export.pdf');
+        Route::get('/hasil_keputusan_stunting/export/excel', [AdminHasilKeputusanController::class, 'exportExcelStunting'])->name('hasil_keputusan_stunting.export.excel');
+        Route::get('/hasil_keputusan_stunting/export/pdf', [AdminHasilKeputusanController::class, 'exportPDFStunting'])->name('hasil_keputusan_stunting.export.pdf');
+
         
         
 
