@@ -88,7 +88,27 @@ class HasilKeputusanController extends Controller
         return Excel::download(new KeputusanExport, 'keputusan.xlsx');
     }
 
+    public function exportExcelNormal()
+    {
+        $keputusan = $this->getKeputusanData(); // Mengambil semua data keputusan
+        $keputusan = array_filter($keputusan, function($item) {
+            return $item['hasil_keputusan'] === 'Normal';
+        });
+    
+        return Excel::download(new KeputusanExport($keputusan), 'keputusan_normal.xlsx');
+    }
 
+    public function exportExcelStunting()
+    {
+        $keputusan = $this->getKeputusanData();
+        $keputusan = array_filter($keputusan, function($item) {
+            return $item['hasil_keputusan'] === 'Stanting';
+        });
+    
+        return Excel::download(new KeputusanExport($keputusan), 'keputusan_stunting.xlsx');
+    }
+    
+    
     public function exportPDF()
     {
         $keputusan = $this->getKeputusanData(); // Dapatkan data keputusan

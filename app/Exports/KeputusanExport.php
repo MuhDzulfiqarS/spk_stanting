@@ -10,27 +10,32 @@ use App\Models\Sub_kriteria;
 use App\Models\Kriteria;
 use App\Models\Nilai_alternatif;
 
-class KeputusanExport implements FromCollection
+class KeputusanExport implements FromCollection, WithHeadings
 {
+    protected $keputusan;
+
+    public function __construct($keputusan = null)
+    {
+        // Jika tidak ada data yang diberikan, ambil semua data
+        $this->keputusan = $keputusan ?: $this->getKeputusanData();
+    }
+
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-       // Dapatkan data keputusan
-       $keputusan = $this->getKeputusanData();
-        
-       // Konversi data keputusan menjadi collection
-       $data = collect($keputusan)->map(function($item) {
-           return [
-               'rank' => $item['rank'],
-               'balita' => $item['balita'],
-               'nilai_preferensi' => $item['nilai_preferensi'],
-               'hasil_keputusan' => $item['hasil_keputusan']
-           ];
-       });
+        // Konversi data keputusan menjadi collection
+        $data = collect($this->keputusan)->map(function($item) {
+            return [
+                'rank' => $item['rank'],
+                'balita' => $item['balita'],
+                'nilai_preferensi' => $item['nilai_preferensi'],
+                'hasil_keputusan' => $item['hasil_keputusan']
+            ];
+        });
 
-       return $data;
+        return $data;
     }
 
     public function headings(): array
